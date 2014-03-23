@@ -67,6 +67,14 @@
     BOOL _viewHasAppearedInitially;
     CGPoint _currentGridContentOffset;
     
+    // Customize Appearance
+    UIColor *_navigationBarTintColor;
+    UIColor *_navigationBarBackgroundTintColor;
+    UIImage *_navigationBarBackgroundImage;
+    UIColor *_toolbarBackgroundTintColor;
+    UIColor *_toolbarTintColor;
+    UIImage *_toolbarBackgroundImage;
+    UIColor *_backgroundColor;
 }
 
 // Properties

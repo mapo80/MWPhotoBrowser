@@ -145,7 +145,7 @@
     if (!_enableGrid) _startOnGrid = NO;
 	
 	// View
-	self.view.backgroundColor = [UIColor blackColor];
+	self.view.backgroundColor = ( _backgroundColor == nil ) ? [UIColor blackColor] : _backgroundColor;
     self.view.clipsToBounds = YES;
 	
 	// Setup paging scrolling view
@@ -156,21 +156,23 @@
 	_pagingScrollView.delegate = self;
 	_pagingScrollView.showsHorizontalScrollIndicator = NO;
 	_pagingScrollView.showsVerticalScrollIndicator = NO;
-	_pagingScrollView.backgroundColor = [UIColor blackColor];
+	_pagingScrollView.backgroundColor = ( _backgroundColor == nil ) ? [UIColor blackColor] : _backgroundColor;
     _pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
 	[self.view addSubview:_pagingScrollView];
 	
     // Toolbar
     _toolbar = [[UIToolbar alloc] initWithFrame:[self frameForToolbarAtOrientation:self.interfaceOrientation]];
-    _toolbar.tintColor = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7") ? [UIColor whiteColor] : nil;
+    //_toolbar.tintColor = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7") ? [UIColor whiteColor] : nil;
+    //_toolbar.backgroundColor = _toolbarTintColor;
+    _toolbar.tintColor = _toolbarTintColor;
     if ([_toolbar respondsToSelector:@selector(setBarTintColor:)]) {
-        _toolbar.barTintColor = nil;
+        _toolbar.barTintColor = _toolbarBackgroundTintColor;
     }
     if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
         [_toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
         [_toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
     }
-    _toolbar.barStyle = UIBarStyleBlackTranslucent;
+    //_toolbar.barStyle = UIBarStyleBlackTranslucent;
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     
     // Toolbar Items
@@ -446,16 +448,18 @@
 - (void)setNavBarAppearance:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    navBar.tintColor = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7") ? [UIColor whiteColor] : nil;
+    self.navigationController.navigationBar.tintColor = _navigationBarTintColor;
     if ([navBar respondsToSelector:@selector(setBarTintColor:)]) {
-        navBar.barTintColor = nil;
+        navBar.barTintColor = _navigationBarBackgroundTintColor;
         navBar.shadowImage = nil;
     }
     navBar.translucent = YES;
     navBar.barStyle = UIBarStyleBlackTranslucent;
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
+        //[navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        //[navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
+        [navBar setBackgroundImage:_navigationBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+        [navBar setBackgroundImage:_navigationBarBackgroundImage forBarMetrics:UIBarMetricsLandscapePhone];
     }
 }
 
@@ -1152,7 +1156,8 @@
     _gridController.selectionMode = _displaySelectionButtons;
     _gridController.view.frame = self.view.bounds;
     _gridController.view.frame = CGRectOffset(_gridController.view.frame, 0, self.view.bounds.size.height);
-
+    [_gridController.collectionView setBackgroundColor:( _backgroundColor == nil ) ? [UIColor blackColor] : _backgroundColor];
+    
     // Stop specific layout being triggered
     _skipNextPagingScrollViewPositioning = YES;
     
@@ -1646,5 +1651,34 @@
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+#pragma mark - Customize user interface
 
+- (void)changeNavigationBarTintColor:(UIColor *)color
+{
+    _navigationBarTintColor = [color copy];
+}
+- (void)changeNavigationBarBackgroundTintColor:(UIColor *)color
+{
+    _navigationBarBackgroundTintColor = [color copy];
+}
+- (void)changeNavigationBarBackgroundImage:(UIImage *)image
+{
+    _navigationBarBackgroundImage = [image copy];
+}
+- (void)changeBackgroundColor:(UIColor *)color
+{
+    _backgroundColor = [color copy];
+}
+- (void)changeToolbarBackgroundTintColor:(UIColor *)color
+{
+    _toolbarBackgroundTintColor = [color copy];
+}
+- (void)changeToolbarTintColor:(UIColor *)color
+{
+    _toolbarTintColor = [color copy];
+}
+- (void)changeToolbarBackgroundImage:(UIImage *)image
+{
+    _toolbarBackgroundImage = [image copy];
+}
 @end
