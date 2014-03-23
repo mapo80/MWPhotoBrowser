@@ -276,14 +276,19 @@
         [items addObject:flexSpace];
     }
 
-    // Right - Action
-    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
+    //    // Right - Action
+    //    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
+    //        [items addObject:_actionButton];
+    //    } else {
+    //        // We're not showing the toolbar so try and show in top right
+    //        if (_actionButton)
+    //            self.navigationItem.rightBarButtonItem = _actionButton;
+    //        [items addObject:fixedSpace];
+    //    }
+    
+    if(_actionButton){
         [items addObject:_actionButton];
-    } else {
-        // We're not showing the toolbar so try and show in top right
-        if (_actionButton)
-            self.navigationItem.rightBarButtonItem = _actionButton;
-        [items addObject:fixedSpace];
+        //self.navigationItem.rightBarButtonItem = _actionButton;
     }
 
     // Toolbar visibility
@@ -369,10 +374,10 @@
         if (SYSTEM_VERSION_LESS_THAN(@"7")) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:animated];
+            //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:animated];
 #pragma clang diagnostic push
         } else {
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+            //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
         }
     }
     
